@@ -122,6 +122,12 @@ If you mutate the state within an action and return it, the view will not be red
 
 Immutability enables time-travel debugging, helps prevent introducing hard-to-track-down bugs by making state changes more predictable, and allows cheap memoization of components using shallow equality <samp>===</samp> checks.
 
+The full signature for an action is:
+
+```js
+value => (state, actions, globalState, globalActions) => ...
+```
+
 #### Asynchronous Actions
 
 Actions used for side effects (writing to databases, sending a request to a server, etc.) don't need to have a return value. You may call an action from within another action or callback function. Actions which return a Promise, <samp>undefined</samp> or <samp>null</samp> will not trigger redraws or update the state.
@@ -351,6 +357,12 @@ export const view = (state, actions) => (
     </ul>
   </div>
 )
+```
+
+The full signature for a component is:
+
+```js
+(attributes, children, globalState, globalActions) => ...
 ```
 
 ### Children Composition
