@@ -1,7 +1,7 @@
 {
   "name": "hyperapp-extended",
   "description": "Hyperapp extended",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "main": "dist/hyperapp-extended.js",
   "module": "src/index.js",
   "typings": "hyperapp.d.ts",

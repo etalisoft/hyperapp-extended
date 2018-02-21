@@ -37,6 +37,18 @@ export function app(state, actions, view, container) {
 
   return wiredActions
 
+  function getState() {
+    return globalState
+  }
+
+  function getActions() {
+    return getActions
+  }
+
+  function current() {
+    return { getState: getState, getActions: getActions }
+  }
+
   function toVNode(element, map) {
     return {
       nodeName: element.nodeName.toLowerCase(),
@@ -49,23 +61,12 @@ export function app(state, actions, view, container) {
     }
   }
 
-  function getters() {
-    return {
-      getState: function() {
-        return globalState
-      },
-      getActions: function() {
-        return wiredActions
-      }
-    }
-  }
-
   function getVNode(node) {
     if (node == null || typeof node === "boolean") {
       return ""
     }
     if (typeof node.nodeName === "function") {
-      return getVNode(node.nodeName(node.attributes, node.children, getters()))
+      return getVNode(node.nodeName(node.attributes, node.children, current()))
     }
     return node
   }
@@ -126,7 +127,7 @@ export function app(state, actions, view, container) {
         ? (function(key, action) {
             actions[key] = function(data) {
               if (typeof (data = action(data)) === "function") {
-                data = data(get(path, globalState), actions, getters())
+                data = data(get(path, globalState), actions, current())
               }
 
               if (
