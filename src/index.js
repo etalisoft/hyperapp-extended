@@ -54,7 +54,7 @@ export function app(state, actions, view, container) {
       return ""
     }
     if (typeof node.nodeName === "function") {
-      return getVNode(node.nodeName(node.attributes, node.children))
+      return getVNode(node.nodeName(node.attributes, node.children, globalState, wiredActions))
     }
     return node
   }
