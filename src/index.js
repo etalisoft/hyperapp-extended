@@ -42,7 +42,7 @@ export function app(state, actions, view, container) {
   }
 
   function getActions() {
-    return getActions
+    return wiredActions
   }
 
   function current() {
