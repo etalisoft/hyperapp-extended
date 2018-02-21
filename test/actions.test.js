@@ -100,3 +100,21 @@ test("call action within action", done => {
 
   main.upAndFoo()
 })
+
+test("actions receive current", done => {
+  const state = { value: 1 }
+  const actions = {
+    up: () => (state, actions, { getState, getActions }) => {
+      expect(getState().value).toBe(1)
+      expect(Object.keys(getActions())).toEqual(["up"])
+      done()
+    }
+  }
+  const view = (state, actions) =>
+    h("div", {
+      oncreate() {
+        actions.up()
+      }
+    })
+  app(state, actions, view, document.body)
+})

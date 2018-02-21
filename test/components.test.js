@@ -78,3 +78,16 @@ test("component with null and Boolean children", done => {
 
   app({}, {}, view, document.body)
 })
+
+test("component with current", done => {
+  const state = { num: Math.random() }
+  const actions = { num: num => state => ({ num }) }
+  const Component = (props, children, { getState, getActions }) => {
+    expect(getState().num).toBe(state.num)
+    expect(Object.keys(getActions())).toEqual(["num"])
+    done()
+    return null
+  }
+  const view = () => h(Component, {}, [])
+  app(state, actions, view, document.body)
+})

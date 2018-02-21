@@ -32,6 +32,7 @@ export function app(state, actions, view, container) {
   var oldNode = rootElement && toVNode(rootElement, [].map)
   var globalState = clone(state)
   var wiredActions = clone(actions)
+  var current = Object.freeze({ getState: getState, getActions: getActions })
 
   scheduleRender(wireStateToActions([], globalState, wiredActions))
 
@@ -43,10 +44,6 @@ export function app(state, actions, view, container) {
 
   function getActions() {
     return wiredActions
-  }
-
-  function current() {
-    return { getState: getState, getActions: getActions }
   }
 
   function toVNode(element, map) {
@@ -66,7 +63,7 @@ export function app(state, actions, view, container) {
       return ""
     }
     if (typeof node.nodeName === "function") {
-      return getVNode(node.nodeName(node.attributes, node.children, current()))
+      return getVNode(node.nodeName(node.attributes, node.children, current))
     }
     return node
   }
@@ -127,7 +124,7 @@ export function app(state, actions, view, container) {
         ? (function(key, action) {
             actions[key] = function(data) {
               if (typeof (data = action(data)) === "function") {
-                data = data(get(path, globalState), actions, current())
+                data = data(get(path, globalState), actions, current)
               }
 
               if (
