@@ -49,12 +49,23 @@ export function app(state, actions, view, container) {
     }
   }
 
+  function getters() {
+    return {
+      getState: function() {
+        return globalState
+      },
+      getActions: function() {
+        return wiredActions
+      }
+    }
+  }
+
   function getVNode(node) {
     if (node == null || typeof node === "boolean") {
       return ""
     }
     if (typeof node.nodeName === "function") {
-      return getVNode(node.nodeName(node.attributes, node.children, globalState, wiredActions))
+      return getVNode(node.nodeName(node.attributes, node.children, getters()))
     }
     return node
   }
@@ -115,12 +126,7 @@ export function app(state, actions, view, container) {
         ? (function(key, action) {
             actions[key] = function(data) {
               if (typeof (data = action(data)) === "function") {
-                data = data(
-                  get(path, globalState),
-                  actions,
-                  globalState,
-                  wiredActions
-                )
+                data = data(get(path, globalState), actions, getters())
               }
 
               if (
